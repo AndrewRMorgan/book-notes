@@ -5,33 +5,42 @@ import BookNotes from './components/book_notes';
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      books: []
+      books: [],
+      selectedBookTitle: '',
+      selectBookNotes: '',
     };
-
-    var books = JSON.parse(localStorage.getItem('books')) || [];
-
-    this.setState({
-      books: books
-    });
   }
+
+  handleTitleChange(event) {
+    this.setState({
+      selectedBookTitle: event.target.value
+    });
+  };
+
+  handleNotesChange(event) {
+    this.setState({
+      selectedBookNotes: event.target.value
+    });
+  };
+
   render() {
     return (
       <div>
         <BookList
           books={this.state.books}
           onBookSelect={selectedBook => this.setState({selectedBook}) }/>
-        <BookNotes book={this.state.selectedBook}/>
-      </div>;
-    )
+        <BookNotes
+          title={this.state.selectedBook.title}
+          notes={this.state.selectedBook.notes}
+          onTitleChange={this.handleTitleChange}
+          onNotesChange={this.handleNotesChange}/>
+      </div>
+    );
   }
 }
-
-
-
-//localStorage.setItem('books', JSON.stringify(todos));
 
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App />, mountNode);
